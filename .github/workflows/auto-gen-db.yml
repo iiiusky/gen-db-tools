@@ -30,6 +30,7 @@ jobs:
         run: |
           rm -rf vulhub
       - name: Commit files
+        continue-on-error: true
         run: |
           git add vulhub.db
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
