@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -29,9 +30,6 @@ jobs:
         run: |
           rm -rf vulhub
       - name: Commit files
-        uses: shell
-        with:
-          allow_failure: true
         run: |
           git add vulhub.db
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
