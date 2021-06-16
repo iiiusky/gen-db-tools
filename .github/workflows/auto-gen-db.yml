@@ -1,0 +1,41 @@
+name: auto gen vulhub db file
+on:
+  schedule:
+    - cron: '0 * * * *'
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: clone vulhub
+        env:
+          working-directory: "vulhub"
+        uses: actions/checkout@v2
+        with:
+          repository: vulhub/vulhub
+          path: "vulhub"
+      - run: ls -la
+      - name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15'
+      - name: go mod tidy
+        run: go mod tidy
+      - name: go build
+        run: go run main.go -p vulhub > vulhub.db
+      - name: rm vulhub dir
+        run: |
+          rm -rf vulhub
+      - name: Commit files
+        run: |
+          git add vulhub.db
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Update vunhub data file" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
