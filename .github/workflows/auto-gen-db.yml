@@ -29,6 +29,7 @@ jobs:
         run: |
           rm -rf vulhub
       - name: Commit files
+        uses: shell
         with:
           allow_failure: true
         run: |
