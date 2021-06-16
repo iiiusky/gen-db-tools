@@ -29,6 +29,8 @@ jobs:
         run: |
           rm -rf vulhub
       - name: Commit files
+        with:
+          allow_failure: true
         run: |
           git add vulhub.db
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
